@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la société
+{% endblock %}
+
+{% block body %}
+	<h1>Détails de la société :
+		{{ company.name }}</h1>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Dénomination Sociale</th>
+				<td>{{ company.name }}</td>
+			</tr>
+			<tr>
+				<th>Siren</th>
+				<td>{{ company.siren }}</td>
+			</tr>
+			<tr>
+				<th>Ville d'immatriculation</th>
+				<td>{{ company.registrationCity }}</td>
+			</tr>
+			<tr>
+				<th>Date d'immatriculation</th>
+				<td>{{ company.registrationDate ? company.registrationDate|date('Y-m-d H:i:s') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Capital</th>
+				<td>{{ company.capital }}</td>
+			</tr>
+			<tr>
+				<th>Numéro de rue</th>
+				<td>{{ company.streetNumber1 }}</td>
+			</tr>
+			<tr>
+				<th>Type de voie</th>
+				<td>{{ company.wayType1 }}</td>
+			</tr>
+			<tr>
+				<th>Nom de rue</th>
+				<td>{{ company.wayName1 }}</td>
+			</tr>
+			<tr>
+				<th>Ville</th>
+				<td>{{ company.city1 }}</td>
+			</tr>
+			<tr>
+				<th>Code Postal</th>
+				<td>{{ company.postCode1 }}</td>
+			</tr>
+			<tr>
+				<th>Numéro de rue</th>
+				<td>{{ company.streetNumber2 }}</td>
+			</tr>
+			<tr>
+				<th>Type de voie</th>
+				<td>{{ company.wayType2 }}</td>
+			</tr>
+			<tr>
+				<th>Nom de rue</th>
+				<td>{{ company.wayName2 }}</td>
+			</tr>
+			<tr>
+				<th>Ville</th>
+				<td>{{ company.city2 }}</td>
+			</tr>
+			<tr>
+				<th>Code Postal</th>
+				<td>{{ company.postCode2 }}</td>
+			</tr>
+			<tr>
+				<th>Numéro de rue</th>
+				<td>{{ company.streetNumber3 }}</td>
+			</tr>
+			<tr>
+				<th>Type de voie</th>
+				<td>{{ company.waytype3 }}</td>
+			</tr>
+			<tr>
+				<th>Nom de rue</th>
+				<td>{{ company.wayName3 }}</td>
+			</tr>
+			<tr>
+				<th>Ville</th>
+				<td>{{ company.city3 }}</td>
+			</tr>
+			<tr>
+				<th>Code Postal</th>
+				<td>{{ company.postCode3 }}</td>
+			</tr>
+			<tr>
+				<th>Crée le</th>
+				<td>{{ company.createdAt ? company.createdAt|date('d-m-Y')}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="listButton">
+		<button type="button" class="btn btn-primary">
+			<a href="{{ path('company_index') }}">Retour à la liste</a>
+		</button>
+
+		<button type="button" class="btn btn-warning">
+			<a href="{{ path('company_edit', {'id': company.id}) }}">Modifier</a>
+		</button>
+	</div>
+	{{ include('company/_delete_form.html.twig') }}
+
+
+{% endblock %}

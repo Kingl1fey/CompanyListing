@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listing des sociétés
+{% endblock %}
+
+{% block body %}
+	<h1>Listing des sociétés</h1>
+	{% for label, messages in app.flashes %}
+		{% for message in messages %}
+			<div class="alert alert-{{ label }}">
+				<strong>{{ message }}</strong>
+			</div>
+		{% endfor %}
+	{% endfor %}
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Nom de la société</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for company in companies %}
+				<tr>
+					<td>
+						<a href="{{ path('company_show', {'id': company.id}) }}" title="Details de la société" class="indexLinks">{{ company.name }}</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="22">Aucune donnée enregistrée</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<button type="button" class="btn btn-info">
+		<a href="{{ path('company_new') }}">Ajouter une nouvelle société</a>
+	</button>
+{% endblock %}

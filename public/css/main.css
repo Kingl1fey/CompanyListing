@@ -1,0 +1,27 @@
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+
+button > a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+a:hover{
+    color: aliceblue;
+}
+.indexLinks{
+    text-decoration: none;
+    color: darkcyan;
+}
+.indexLinks:hover{
+    text-decoration: none;
+    color: darkred;
+}
+.listButton{
+    margin-bottom: 0.2rem;
+}
