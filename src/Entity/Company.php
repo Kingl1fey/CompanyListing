@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CompanyRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,7 +26,11 @@ class Company
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=9)
+     * @ORM\Column(type="integer", length=9)
+     * @Assert\Length(
+     *      min = 9,    
+     *      minMessage = "Le siren doit comporter {{ limit }} caractères"
+     * )
      */
     private $siren;
 
@@ -125,7 +130,7 @@ class Company
     private $legalForm;
 
     /**
-     * @ORM\OneToMany(targetEntity=CompanyHistory::class, mappedBy="company")
+     * @ORM\OneToMany(targetEntity=CompanyHistory::class, mappedBy="company", cascade={"all"})
      */
     private $companyHistories;
 

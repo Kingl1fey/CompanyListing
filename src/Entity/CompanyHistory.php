@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CompanyHistoryRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,7 +24,11 @@ class CompanyHistory
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=9)
+     * @ORM\Column(type="integer", length=9)
+     * @Assert\Length(
+     *      min = 9,
+     *      minMessage = "Le siren doit comporter {{ limit }} caractères"
+     * )
      */
     private $siren;
 

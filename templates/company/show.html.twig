@@ -4,106 +4,128 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Détails de la société :
-		{{ company.name }}</h1>
-	<table class="table">
-		<tbody>
-			<tr>
-				<th>Dénomination Sociale</th>
-				<td>{{ company.name }}</td>
-			</tr>
-			<tr>
-				<th>Siren</th>
-				<td>{{ company.siren }}</td>
-			</tr>
-			<tr>
-				<th>Ville d'immatriculation</th>
-				<td>{{ company.registrationCity }}</td>
-			</tr>
-			<tr>
-				<th>Date d'immatriculation</th>
-				<td>{{ company.registrationDate ? company.registrationDate|date('Y-m-d H:i:s') : '' }}</td>
-			</tr>
-			<tr>
-				<th>Capital</th>
-				<td>{{ company.capital }}</td>
-			</tr>
-			<tr>
-				<th>Numéro de rue</th>
-				<td>{{ company.streetNumber1 }}</td>
-			</tr>
-			<tr>
-				<th>Type de voie</th>
-				<td>{{ company.wayType1 }}</td>
-			</tr>
-			<tr>
-				<th>Nom de rue</th>
-				<td>{{ company.wayName1 }}</td>
-			</tr>
-			<tr>
-				<th>Ville</th>
-				<td>{{ company.city1 }}</td>
-			</tr>
-			<tr>
-				<th>Code Postal</th>
-				<td>{{ company.postCode1 }}</td>
-			</tr>
-			<tr>
-				<th>Numéro de rue</th>
-				<td>{{ company.streetNumber2 }}</td>
-			</tr>
-			<tr>
-				<th>Type de voie</th>
-				<td>{{ company.wayType2 }}</td>
-			</tr>
-			<tr>
-				<th>Nom de rue</th>
-				<td>{{ company.wayName2 }}</td>
-			</tr>
-			<tr>
-				<th>Ville</th>
-				<td>{{ company.city2 }}</td>
-			</tr>
-			<tr>
-				<th>Code Postal</th>
-				<td>{{ company.postCode2 }}</td>
-			</tr>
-			<tr>
-				<th>Numéro de rue</th>
-				<td>{{ company.streetNumber3 }}</td>
-			</tr>
-			<tr>
-				<th>Type de voie</th>
-				<td>{{ company.waytype3 }}</td>
-			</tr>
-			<tr>
-				<th>Nom de rue</th>
-				<td>{{ company.wayName3 }}</td>
-			</tr>
-			<tr>
-				<th>Ville</th>
-				<td>{{ company.city3 }}</td>
-			</tr>
-			<tr>
-				<th>Code Postal</th>
-				<td>{{ company.postCode3 }}</td>
-			</tr>
-			<tr>
-				<th>Crée le</th>
-				<td>{{ company.createdAt ? company.createdAt|date('d-m-Y')}}</td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="listButton">
-		<button type="button" class="btn btn-primary">
-			<a href="{{ path('company_index') }}">Retour à la liste</a>
-		</button>
-
-		<button type="button" class="btn btn-warning">
-			<a href="{{ path('company_edit', {'id': company.id}) }}">Modifier</a>
-		</button>
-	</div>
-	{{ include('company/_delete_form.html.twig') }}
+	<section>
+		<h1>Détails de la société :
+			{{ company.name }}</h1>
+		<input type="datetime-local" id="dateChange">
+		<div>
+			Dénomination Sociale :
+			<strong>{{ company.name }}</strong>
+		</div>
+		<div>
+			Siren :
+			<strong>{{ company.siren }}</strong>
+		</div>
+		<div>
+			Ville d'immatriculation :
+			<strong>{{ company.registrationCity }}</strong>
+		</div>
+		<div>
+			Date d'immatriculation :
+			<strong>{{ company.registrationDate ? company.registrationDate|date('Y-m-d H:i:s') : '' }}</strong>
+		</div>
+		<div>
+			Capital :
+			<strong>{{ company.capital }}</strong>
+		</div>
+		<h4 class="formTitle">
+			Adresse principale
+		</h4>
+		<div>
+			Numéro de rue :
+			<strong>{{ company.streetNumber1 }}</strong>
+		</div>
+		<div>
+			Type de voie :
+			<strong>{{ company.wayType1 }}</strong>
+		</div>
+		<div>
+			Nom de rue :
+			<strong>{{ company.wayName1 }}</strong>
+		</div>
+		<div>
+			Ville :
+			<strong>{{ company.city1 }}</strong>
+		</div>
+		<div>
+			Code Postal :
+			<strong>{{ company.postCode1 }}</strong>
+		</div>
+		<h4 class="formTitle">
+			Adresse secondaire(optionnelle)
+		</h4>
+		<div>
+			Numéro de rue :
+			<strong>{{ company.streetNumber2 }}</strong>
+		</div>
+		<div>
+			Type de voie :
+			<strong>{{ company.wayType2 }}</strong>
+		</div>
+		<div>
+			Nom de rue :
+			<strong>{{ company.wayName2 }}</strong>
+		</div>
+		<div>
+			Ville :
+			<strong>{{ company.city2 }}</strong>
+		</div>
+		<div>
+			Code Postal :
+			<strong>{{ company.postCode2 }}</strong>
+		</div>
+		<h4 class="formTitle">
+			Autre adresse (optionnelle)
+		</h4>
+		<div>
+			Numéro de rue :
+			<strong>{{ company.streetNumber3 }}</strong>
+		</div>
+		<div>
+			Type de voie :
+			<strong>{{ company.waytype3 }}</strong>
+		</div>
+		<div>
+			Nom de rue :
+			<strong>{{ company.wayName3 }}</strong>
+		</div>
+		<div>
+			Ville :
+			<strong>{{ company.city3 }}</strong>
+		</div>
+		<div>
+			Code Postal :
+			<strong>{{ company.postCode3 }}</strong>
+		</div>
+		<div>
+			Ajoutée le :
+			<strong>{{ company.createdAt ? company.createdAt|date('d-m-Y')}}</strong>
+		</div>
 
 
+		<div class="listButton">
+			<button type="button" class="btn btn-primary">
+				<a href="{{ path('company_index') }}">Retour à la liste</a>
+			</button>
+
+			<button type="button" class="btn btn-warning">
+				<a href="{{ path('company_edit', {'id': company.id}) }}">Modifier</a>
+			</button>
+		</div>
+
+		{{ include('company/_delete_form.html.twig') }}
+	</section>
+	<script>
+		var company = "{{ company.id }}"
+$(document).ready(function () {
+
+var changeDate = document.getElementById('dateChange');
+console.log(company);
+var selectedDate = document.getElementById('dateChange').value;
+changeDate.addEventListener("change", function () {
+console.log(company);
+window.location.href = "{{ path('company_show_history', {'id': 'company', 'date': 'selectedDate'}) }}"
+})
+})
+	</script>
 {% endblock %}

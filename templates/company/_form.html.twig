@@ -1,4 +1,36 @@
-{{ form_start(form) }}
-{{ form_widget(form) }}
-<button type="button" class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
-{{ form_end(form) }}
+{% form_theme form 'foundation_6_layout.html.twig' %}
+{% block body %}
+	{{ form_start(form) }}
+	{{ form_row(form.name) }}
+	{{ form_row(form.siren) }}
+	{{ form_row(form.capital) }}
+	{{ form_row(form.registrationCity) }}
+	{{ form_row(form.registrationDate) }}
+	<h4 class="formTitle">
+		Adresse principale
+	</h4>
+	{{ form_row(form.streetNumber1) }}
+	{{ form_row(form.wayType1) }}
+	{{ form_row(form.wayName1) }}
+	{{ form_row(form.city1) }}
+	{{ form_row(form.postCode1) }}
+	<h4 class="formTitle">
+		Adresse secondaire(optionnelle)
+	</h4>
+	{{ form_row(form.streetNumber2) }}
+	{{ form_row(form.wayType2) }}
+	{{ form_row(form.wayName2) }}
+	{{ form_row(form.city2) }}
+	{{ form_row(form.postCode2) }}
+	<h4 class="formTitle">
+		Autre adresse (optionnelle)
+	</h4>
+	{{ form_row(form.streetNumber3) }}
+	{{ form_row(form.waytype3) }}
+	{{ form_row(form.wayName3) }}
+	{{ form_row(form.city3) }}
+	{{ form_row(form.postCode3) }}
+	{{ form_row(form.legalForm) }}
+	<button type=" btn button" class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+	{{ form_end(form) }}
+{% endblock %}

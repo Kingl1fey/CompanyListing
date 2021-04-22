@@ -17,7 +17,7 @@ class Company1Type extends AbstractType
             ->add('name',null, ['label' => 'Dénomination sociale '])
             ->add('siren',null, ['label' => 'Siren '])
             ->add('registrationCity',null, ['label' => "Ville d'immatriculation "])
-            ->add('registrationDate',null, ['label' => "Date d'immatriculation "])
+            ->add('registrationDate',null, ['label' => " Date d'immatriculation"])
             ->add('capital',null, ['label' => 'Capital '])
             ->add('streetNumber1',null, ['label' => 'Numéro de rue '])
             ->add('wayType1',null, ['label' => 'Type de voie '])
