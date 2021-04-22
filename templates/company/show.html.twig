@@ -116,15 +116,32 @@
 		{{ include('company/_delete_form.html.twig') }}
 	</section>
 	<script>
-		var company = "{{ company.id }}"
+		var companyId = "{{ company.id }}"
 $(document).ready(function () {
 
 var changeDate = document.getElementById('dateChange');
-console.log(company);
-var selectedDate = document.getElementById('dateChange').value;
+console.log(changeDate);
+// Je ne sais pas si tu le sais, mais tu es deco de discord. donc je ne t'entends pas.
+// console.log(company);
 changeDate.addEventListener("change", function () {
-console.log(company);
-window.location.href = "{{ path('company_show_history', {'id': 'company', 'date': 'selectedDate'}) }}"
+	// console.log(company);
+	var selectedDate = changeDate.value;
+	console.log(selectedDate);
+	console.log('start');
+	$.ajax({
+		type: "GET",
+		url: "{{ path('company_show_history') }}" + "?selectedDate=" + selectedDate + "&companyId=" + companyId,
+		async: true,
+		success : function (a){
+			console.log(a);
+
+			strong = document.getElementsByTagName("strong");
+			strong[0].innerHTML = a[0]["name"];
+			strong[1].innerHTML = a[0]["siren"];
+			strong[2].innerHTML = a[0]["registrationCity"];
+		}
+		//dataType: "json",
+	});
 })
 })
 	</script>

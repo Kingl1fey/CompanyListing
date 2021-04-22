@@ -22,21 +22,23 @@ class CompanyHistoryRepository extends ServiceEntityRepository
     // /**
     //  * @return CompanyHistory[] Returns an array of CompanyHistory objects
     //  */
-    
-    public function findByDate($id,$date)
+
+    public function findByDate($id, $date)
     {
-        return $this->createQueryBuilder('ch')
+        $query = $this->createQueryBuilder('ch')
             ->andWhere('ch.company = :val')
+            ->andWhere('ch.updatedAt <= :date')
             ->setParameter('val', $id)
-            ->andWhere('ch.updatedAt = :val')
-                ->setParameter('val', $date)
+            ->setParameter('date', $date)
             ->orderBy('ch.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+
+        //dd($answer);
+        return $query;
     }
-    
+
 
     /*
     public function findOneBySomeField($value): ?CompanyHistory

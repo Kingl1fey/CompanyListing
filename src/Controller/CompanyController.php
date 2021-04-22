@@ -3,13 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Company;
-use App\Entity\CompanyHistory;
 use App\Form\Company1Type;
+use App\Entity\CompanyHistory;
 use App\Repository\CompanyRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CompanyHistoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/company")
@@ -17,7 +19,49 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompanyController extends AbstractController
 {
     /**
-     * @Route("/", name="company_index", methods={"GET"})
+     * @Route("/history", name="company_show_history")
+     */
+    public function showHistory(CompanyHistoryRepository $repo, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+
+            $id = $request->query->get("companyId");
+            //$compagny = $this->getDoctrine()->getRepository(Company::class)->find($id);
+            $selectedDate = $request->query->get("selectedDate");
+
+
+            $releaseDate = new \DateTime((string) $selectedDate);
+            $temp = $releaseDate->format('Y-m-d H:i:s');
+            //dd($temp);
+            //$request->getSession()->set("selectedDate", $selectedDate);
+            //$request->getSession()->set("compagnyId", $id);
+            // $entityManager = $this->getDoctrine()->getManager();
+            // $excistingCompanies = $entityManager->getRepository(Company::class)->find($company);
+            //dd($excistingCompanies);
+
+            //return $this->render('company/show_history.html.twig', [
+            //'company' => $excistingCompanies,
+            //]);
+
+            $found = $repo->findByDate($id, $temp);
+            //dd($found);
+
+            $found = $found[0];
+
+            $company = [];
+            $company["id"] = $found->getId();
+            $company["name"] = $found->getName();
+            $company["siren"] = $found->getSiren();
+            $company["legalform"] = $found->getLegalform()->getName();
+            $company["registrationCity"] = $found->getRegistrationCity();
+
+            return new JsonResponse([$company]);
+        }
+        //dd($request->getSession()->get("selectedDate"), $request->getSession()->get("companyId"));
+        return $this->render("show_history.html.twig");
+    }
+    /**
+     * @Route("/index", name="company_index", methods={"GET"})
      */
     public function index(CompanyRepository $companyRepository): Response
     {
@@ -35,25 +79,24 @@ class CompanyController extends AbstractController
         $history = new CompanyHistory();
         $form = $this->createForm(Company1Type::class, $company);
         $form->handleRequest($request);
-        
+
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $entityManager = $this->getDoctrine()->getManager();
             $excistingCompanies = $entityManager->getRepository(Company::class)->findAll();
-            
-            
+
+
             if ($excistingCompanies) {
-                
+
                 foreach ($excistingCompanies as $excistingCompany) {
-                
-                    if ($excistingCompany->getName() == $company->getName() ) {
-                        
-                        $this->addFlash("danger", "La société '". $company->getName() ."' existe déjà dans le listing. Merci de vérifier et de modifier les données existantes de la société.");
+
+                    if ($excistingCompany->getName() == $company->getName()) {
+
+                        $this->addFlash("danger", "La société '" . $company->getName() . "' existe déjà dans le listing. Merci de vérifier et de modifier les données existantes de la société.");
                         return $this->redirectToRoute('company_index');
-    
                     } else {
-                        
+
                         $history->setName($company->getName());
                         $history->setSiren($company->getSiren());
                         $history->setRegistrationCity($company->getRegistrationCity());
@@ -79,17 +122,16 @@ class CompanyController extends AbstractController
                         $history->setUpdatedAt(new \DateTime('now'));
                         $company->setCreatedAt(new \DateTime('now'));
                         $company->setUpdatedAt(new \DateTime('now'));
-    
+
                         $entityManager->persist($company);
                         $entityManager->persist($history);
                         $entityManager->flush();
-                  
                     }
-                    $this->addFlash("success", "La société '". $company->getName() ."' a bien été rajouté au listing.");
+                    $this->addFlash("success", "La société '" . $company->getName() . "' a bien été rajouté au listing.");
                     return $this->redirectToRoute('company_index');
                 }
             } else {
-                        
+
                 $history->setName($company->getName());
                 $history->setSiren($company->getSiren());
                 $history->setRegistrationCity($company->getRegistrationCity());
@@ -119,12 +161,11 @@ class CompanyController extends AbstractController
                 $entityManager->persist($company);
                 $entityManager->persist($history);
                 $entityManager->flush();
-          
             }
-            $this->addFlash("success", "La société '". $company->getName() ."' a bien été rajouté au listing.");
+            $this->addFlash("success", "La société '" . $company->getName() . "' a bien été rajouté au listing.");
             return $this->redirectToRoute('company_index');
         }
-        
+
 
         return $this->render('company/new.html.twig', [
             'company' => $company,
@@ -135,27 +176,14 @@ class CompanyController extends AbstractController
     /**
      * @Route("/{id}", name="company_show", methods={"GET"})
      */
-    public function show(Company $company): Response
+    public function show(Company $company, Request $request): Response
     {
-
+        //$request->getSession()->set("companyId", $company->getId());
         return $this->render('company/show.html.twig', [
             'company' => $company,
         ]);
     }
-    /**
-         * @Route("/history/{id}/{date}", defaults={"id" = null, "date" = null}, name="company_show_history", methods={"GET"})
-         */
-        public function showHistory(Company $company, $date): Response
-        {
-            dd('hello');
-            $entityManager = $this->getDoctrine()->getManager();
-            $excistingCompanies = $entityManager->getRepository(Company::class)->find($company);
-            dd($excistingCompanies);
-            
-            return $this->render('company/show_history.html.twig', [
-                'company' => $excistingCompanies,
-            ]);
-        }
+
     /**
      * @Route("/{id}/edit", name="company_edit", methods={"GET","POST"})
      */
@@ -163,7 +191,7 @@ class CompanyController extends AbstractController
     {
         $form = $this->createForm(Company1Type::class, $company);
         $form->handleRequest($request);
-        $history = new CompanyHistory(); 
+        $history = new CompanyHistory();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -198,7 +226,7 @@ class CompanyController extends AbstractController
             $entityManager->persist($history);
             $entityManager->flush();
 
-            $this->addFlash("success", "La société '". $company->getName() ."' a bien été mise à jour dans le listing.");
+            $this->addFlash("success", "La société '" . $company->getName() . "' a bien été mise à jour dans le listing.");
             return $this->redirectToRoute('company_index');
         }
 
@@ -213,12 +241,12 @@ class CompanyController extends AbstractController
      */
     public function delete(Request $request, Company $company): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$company->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $company->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($company);
             $entityManager->flush();
         }
-        $this->addFlash("success", "La société '". $company->getName() ."' a bien été supprimée du listing.");
+        $this->addFlash("success", "La société '" . $company->getName() . "' a bien été supprimée du listing.");
         return $this->redirectToRoute('company_index');
     }
 }
