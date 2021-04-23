@@ -23,28 +23,19 @@ class CompanyController extends AbstractController
      */
     public function showHistory(CompanyHistoryRepository $repo, Request $request)
     {
+        /*Création JSON pour affichage en AJAX*/
+
         if ($request->isXmlHttpRequest()) {
 
             $id = $request->query->get("companyId");
-            //$compagny = $this->getDoctrine()->getRepository(Company::class)->find($id);
             $selectedDate = $request->query->get("selectedDate");
 
 
             $releaseDate = new \DateTime((string) $selectedDate);
             $temp = $releaseDate->format('Y-m-d H:i:s');
-            //dd($temp);
-            //$request->getSession()->set("selectedDate", $selectedDate);
-            //$request->getSession()->set("compagnyId", $id);
-            // $entityManager = $this->getDoctrine()->getManager();
-            // $excistingCompanies = $entityManager->getRepository(Company::class)->find($company);
-            //dd($excistingCompanies);
 
-            //return $this->render('company/show_history.html.twig', [
-            //'company' => $excistingCompanies,
-            //]);
-
+            /*Requête dans l'historique qui retourne la dernieère MAJ*/
             $found = $repo->findByDate($id, $temp);
-            //dd($found);
 
             $found = $found[0];
 
@@ -54,12 +45,32 @@ class CompanyController extends AbstractController
             $company["siren"] = $found->getSiren();
             $company["legalform"] = $found->getLegalform()->getName();
             $company["registrationCity"] = $found->getRegistrationCity();
+            $company["registrationDate"] = ($found->getRegistrationDate())->format('d-m-Y');
+            $company["capital"] = $found->getCapital();
+            $company["streetNumber1"] = $found->getStreetNumber1();
+            $company["wayType1"] = $found->getWayType1();
+            $company["wayName1"] = $found->getWayName1();
+            $company["city1"] = $found->getCity1();
+            $company["postCode1"] = $found->getPostCode1();
+            $company["streetNumber2"] = $found->getStreetNumber2();
+            $company["wayType2"] = $found->getWayType2();
+            $company["wayName2"] = $found->getWayName2();
+            $company["city2"] = $found->getCity2();
+            $company["postCode2"] = $found->getPostCode2();
+            $company["streetNumber3"] = $found->getStreetNumber3();
+            $company["waytype3"] = $found->getWaytype3();
+            $company["wayName3"] = $found->getWayName3();
+            $company["city3"] = $found->getCity3();
+            $company["postCode3"] = $found->getPostCode3();
+            $company["updatedAt"] = ($found->getUpdatedAt())->format('d-m-Y H:i:s');
+
 
             return new JsonResponse([$company]);
         }
-        //dd($request->getSession()->get("selectedDate"), $request->getSession()->get("companyId"));
-        return $this->render("show_history.html.twig");
+
+        return $this->render("company/show.html.twig");
     }
+
     /**
      * @Route("/index", name="company_index", methods={"GET"})
      */
@@ -75,6 +86,9 @@ class CompanyController extends AbstractController
      */
     public function new(Request $request): Response
     {
+
+        /*Ajout dans les tables Company et CompanyHistory*/
+
         $company = new Company();
         $history = new CompanyHistory();
         $form = $this->createForm(Company1Type::class, $company);
@@ -178,7 +192,6 @@ class CompanyController extends AbstractController
      */
     public function show(Company $company, Request $request): Response
     {
-        //$request->getSession()->set("companyId", $company->getId());
         return $this->render('company/show.html.twig', [
             'company' => $company,
         ]);
@@ -189,6 +202,8 @@ class CompanyController extends AbstractController
      */
     public function edit(Request $request, Company $company): Response
     {
+        /*Modification des éléments Company et enregistrement de la nouvelle version dans CompanyHistory*/
+
         $form = $this->createForm(Company1Type::class, $company);
         $form->handleRequest($request);
         $history = new CompanyHistory();

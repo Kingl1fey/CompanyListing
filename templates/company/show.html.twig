@@ -5,8 +5,8 @@
 
 {% block body %}
 	<section>
-		<h1>Détails de la société :
-			{{ company.name }}</h1>
+		<h1>Détails de la société : {{ company.name }}</h1>
+		<h4>Date d'ajout : Le {{ company.createdAt ? company.createdAt|date('d-m-Y H:i:s')}}</h4>
 		<input type="datetime-local" id="dateChange">
 		<div>
 			Dénomination Sociale :
@@ -98,17 +98,18 @@
 			<strong>{{ company.postCode3 }}</strong>
 		</div>
 		<div>
-			Ajoutée le :
-			<strong>{{ company.createdAt ? company.createdAt|date('d-m-Y')}}</strong>
+			Mis à jour le :
+			<strong>{{ company.updatedAt ? company.updatedAt|date('d-m-Y H:i:s')}}</strong>
 		</div>
+	
 
 
 		<div class="listButton">
-			<button type="button" class="btn btn-primary">
+			<button type="btn button" class="btn btn-primary">
 				<a href="{{ path('company_index') }}">Retour à la liste</a>
 			</button>
 
-			<button type="button" class="btn btn-warning">
+			<button type="btn button" class="btn btn-warning">
 				<a href="{{ path('company_edit', {'id': company.id}) }}">Modifier</a>
 			</button>
 		</div>
@@ -120,27 +121,41 @@
 $(document).ready(function () {
 
 var changeDate = document.getElementById('dateChange');
-console.log(changeDate);
-// Je ne sais pas si tu le sais, mais tu es deco de discord. donc je ne t'entends pas.
-// console.log(company);
+
 changeDate.addEventListener("change", function () {
-	// console.log(company);
 	var selectedDate = changeDate.value;
-	console.log(selectedDate);
-	console.log('start');
 	$.ajax({
 		type: "GET",
 		url: "{{ path('company_show_history') }}" + "?selectedDate=" + selectedDate + "&companyId=" + companyId,
 		async: true,
 		success : function (a){
-			console.log(a);
 
 			strong = document.getElementsByTagName("strong");
+			
 			strong[0].innerHTML = a[0]["name"];
 			strong[1].innerHTML = a[0]["siren"];
 			strong[2].innerHTML = a[0]["registrationCity"];
+			strong[3].innerHTML = a[0]["registrationDate"];
+			strong[4].innerHTML = a[0]["capital"];
+			strong[5].innerHTML = a[0]["streetNumber1"];
+			strong[6].innerHTML = a[0]["wayType1"];
+			strong[7].innerHTML = a[0]["wayName1"];
+			strong[8].innerHTML = a[0]["city1"];
+			strong[9].innerHTML = a[0]["postCode1"];
+			strong[10].innerHTML = a[0]["streetNumber2"];
+			strong[11].innerHTML = a[0]["wayType2"];
+			strong[12].innerHTML = a[0]["wayName2"];
+			strong[13].innerHTML = a[0]["city2"];
+			strong[14].innerHTML = a[0]["postCode2"];
+			strong[15].innerHTML = a[0]["streetNumber3"];
+			strong[16].innerHTML = a[0]["waytype3"];
+			strong[17].innerHTML = a[0]["wayName3"];
+			strong[18].innerHTML = a[0]["city3"];
+			strong[19].innerHTML = a[0]["postCode3"];
+			strong[20].innerHTML = a[0]["updatedAt"];
+
 		}
-		//dataType: "json",
+		
 	});
 })
 })

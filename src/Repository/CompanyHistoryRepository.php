@@ -35,7 +35,6 @@ class CompanyHistoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        //dd($answer);
         return $query;
     }
 

@@ -21,6 +21,7 @@ section {
 }
 h1{
     text-decoration: underline;
+    text-transform: uppercase;
 }
 
 button > a {
